@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Here we create a record for the album and see the list of albums</title>
+        <style>
+            table, th, tr, td {border: 3px solid black;}
+        </style>
+    </head>
+    <body>
+    <h2>List of albums</h2>
+
+    <table>
+        <thead>
+            <th>Album Name</th>
+            <th>Artist Name</th>
+            <th>Album Release Year</th>
+            <th>Genre</th>
+            <th>Album id</th>
+        </thead>
+    {% for album_update in albums %}
+        <tr>
+            <td><a href="/albums/{{ loop.index }}">{{ album_update.albumname }}</a></td>
+            <td>{{ album_update.artistname }}</td>
+            <td>{{ album_update.releaseyear }}</td>
+            <td>{{ album_update.genre }}</td>
+            <td>{{ album_update.id_album }}</td>
+        </tr>
+    {% endfor %}
+    </table>
+    <div>
+        <h2> Add new album: </h2>
+        <form method="POST" action="/albums/">
+            {{ album.hidden_tag() }}
+            <table>
+                {% for field in album if field.widget.input_type != 'hidden' %}
+                <tr>
+                    <th>{{ field.label }} {% if field.flags.required %} {% endif %}</th>
+                    <td>{{ field }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            <input type="submit" value="Go">
+        </form>
+    </div>
+    </body>
+</html>
