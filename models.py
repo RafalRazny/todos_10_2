@@ -4,11 +4,12 @@ from wtforms import StringField, IntegerField, SelectField
 from wtforms.validators import DataRequired, NumberRange, InputRequired
 from datetime import datetime
 
+albums_json = "albums.json"
 
-class Albums:
+class AlbumsRepository:
     def __init__(self):
         try:
-            with open("albums.json", "r") as f:
+            with open(albums_json, "r") as f:
                 self.albums = json.load(f)
         except FileNotFoundError:
             self.albums = []
@@ -24,7 +25,7 @@ class Albums:
         self.albums.append(data)
     
     def save_all(self):
-        with open("albums.json", "w") as f:
+        with open(albums_json, "w") as f:
             json.dump(self.albums, f)
 
     def update(self, id, data):
@@ -32,13 +33,13 @@ class Albums:
         self.albums[id] = data
         self.save_all()
 
-albums = Albums()
+albums = AlbumsRepository()
 
-thisyear = datetime.now().year
+current_year = datetime.now().year
 
 class AlbumForm(FlaskForm):
     albumname = StringField("Album Name", validators=[DataRequired()])
     artistname = StringField("Artist Name", validators=[DataRequired()])
-    releaseyear = IntegerField("Release Year", validators=[NumberRange(min=1900, max=thisyear, message='Please insert the year between 1900 and {thisyear}')])
+    releaseyear = IntegerField("Release Year", validators=[NumberRange(min=1900, max=current_year, message=f'Please insert the year between 1900 and {current_year}')])
     genre = SelectField("Genre", choices = [('rock'), ('pop'), ('alternative'), ('hip-how'), ('dance'), ('jazz'), ('electronic'), ('classic')], validators=[InputRequired()])
     id_album = StringField("Album id", validators=[DataRequired()])
