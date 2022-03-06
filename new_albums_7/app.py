@@ -2,7 +2,7 @@ from flask import Flask, jsonify, abort, make_response, request
 from models import albums
 
 app = Flask(__name__)
-app.config["SECRET_KEY"] = "achtungbaby"
+app.config["SECRET_KEY"] = "joshouatree"
 
 
 @app.route("/api/v1/albums/", methods=["GET"])
